@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  # This is where deployment know what pod(s) to manage 
+  # Must match matchLabels & Service component selector label
+  template:
+    metadata:
+      labels: 
+        app: client
+    # This is where we tell the pod how to behave
+    spec:
+      containers:
+      - name: client
+        image: barryblando/client:latest
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  type: ClusterIP # optional, ClusterIP will still be the default
+  selector:
+    app: client
+  ports:
+  - name: client
+    protocol: TCP
+    port: 3000
+    targetPort: 3000

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expiration-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expiration
+  # This is where deployment know what pod(s) to manage 
+  # Must match matchLabels & Service component selector label
+  template:
+    metadata:
+      labels: 
+        app: expiration
+    # This is where we tell the pod how to behave
+    spec:
+      containers:
+      - name: expiration
+        image: barryblando/expiration:latest
+        env:
+          - name: NATS_CLUSTER_ID
+            value: 'ticketing'
+          - name: NATS_CLIENT_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name # pods name
+          - name: NATS_URL
+            value: 'http://nats-srv:4222'
+          - name: REDIS_HOST
+            value: expiration-redis-srv
+        resources: {}
+

@@ -1,0 +1,8 @@
+export const stripe = {
+  charges: {
+    create: jest
+      .fn()
+      // auto resolved itself when calling stripe.charges.create which returns promise
+      .mockResolvedValue({})
+  }
+}

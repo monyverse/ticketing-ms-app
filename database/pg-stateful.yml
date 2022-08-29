@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pg-stateful
+spec:
+  serviceName: "postgres"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: pg-config
+          ports:
+            - containerPort: 5432
+              name: postgresDB
+          ## this will persist the data of the Postgres database
+          volumeMounts:
+            - name: postgresDB
+              mountPath: /var/lib/PostgreSQL/data
+              subPath: Postgres
+  volumeClaimTemplates:
+    - metadata:
+        name: postgresDB
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 3Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-srv
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  clusterIP: None
+  ports:
+  - port: 5432
+    name: postgres

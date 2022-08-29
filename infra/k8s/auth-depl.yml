@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+  # you can also apply this component to a separate namespace
+  # namespace: my-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  # This is where deployment know what pod(s) to manage 
+  # Must match matchLabels & Service component selector label
+  template:
+    metadata:
+      labels: 
+        app: auth
+    # This is where we tell the pod how to behave
+    spec:
+      containers:
+      - name: auth
+        image: barryblando/auth:latest
+        # NOTE: create secret object first before setting it up in here
+        env:
+          - name: MONGO_URI
+            value: 'mongodb://auth-mongo-srv:27017/auth'
+          - name: JWT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jwt-secret
+                key: JWT_KEY
+        resources: {}        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  type: ClusterIP # optional, ClusterIP will still be the default
+  selector:
+    app: auth
+  ports:
+  - name: auth
+    protocol: TCP
+    port: 3000
+    targetPort: 3000
