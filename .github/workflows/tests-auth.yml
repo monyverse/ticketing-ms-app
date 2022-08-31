@@ -17,6 +17,6 @@ jobs:
 
       - name: Install dependencies and do Test
         run: |
-          cd tickets
+          cd auth
           pnpm install
           pnpm run test:ci
