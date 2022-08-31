@@ -1,7 +1,10 @@
 name: tests-auth
 
 on:
-  pull_request
+  # only runs when there are changes on that specified paths
+  pull_request:
+    paths:
+      - 'auth/**'
   
 jobs:
   build:
