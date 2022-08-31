@@ -32,18 +32,21 @@ it('implements optimistic concurrency control', async () => {
   throw new Error('Should not reach this point')
 })
 
-it('increments the version number on multiple saves', async () => {
-  const ticket = Ticket.build({
-    title: 'concert',
-    price: 20,
-    userId: '123'
-  })
+// https://mongoosejs.com/docs/guide.html#versionKey
+// Mongoose optimisticConcurrency is ensuring document synchronizes, multiple calls of save in one document won't increment version 
+// Version won't increment if document values still the same unless you update some of it. So this test will result error now
+// it('increments the version number on multiple saves', async () => {
+//   const ticket = Ticket.build({
+//     title: 'concert',
+//     price: 20,
+//     userId: '123'
+//   })
 
-  await ticket.save()
-  expect(ticket.version).toEqual(0)
-  await ticket.save()
-  expect(ticket.version).toEqual(1)
-  await ticket.save()
-  expect(ticket.version).toEqual(2)
-})
+//   await ticket.save()
+//   expect(ticket.version).toEqual(0)
+//   await ticket.save()
+//   expect(ticket.version).toEqual(1)
+//   await ticket.save()
+//   expect(ticket.version).toEqual(2)
+// })
 
