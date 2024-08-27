@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tickets
-        image: barryblando/tickets:latest
+       image: daochat/tickets:latest
         # NOTE: create secret object first before setting it up in here
         env:
           - name: NATS_CLUSTER_ID

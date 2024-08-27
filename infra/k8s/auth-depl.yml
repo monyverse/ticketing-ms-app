@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: barryblando/auth:latest
+       image: daochat/auth:latest
         # NOTE: create secret object first before setting it up in here
         env:
           - name: MONGO_URI

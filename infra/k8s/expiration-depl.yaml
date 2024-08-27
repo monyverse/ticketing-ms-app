@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: expiration
-        image: barryblando/expiration:latest
+       image: daochat/expiration:latest
         env:
           - name: NATS_CLUSTER_ID
             value: 'ticketing'

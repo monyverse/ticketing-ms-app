@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: barryblando/client:latest
+       image: daochat/client:latest
         resources: {}
 ---
 apiVersion: v1

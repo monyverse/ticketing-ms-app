@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: payments
-        image: barryblando/payments:latest
+       image: daochat/payments:latest
         # NOTE: create secret object first before setting it up in here
         env:
           - name: NATS_CLUSTER_ID
